@@ -1,146 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<title>Shahed Movies | Register</title>
-<meta charset="utf-8">
-<link rel="icon" href="../images/favicon.ico">
-<link rel="shortcut icon" href="../images/favicon.ico">
-<link rel="stylesheet" href="../css/style.css">
-<link rel="stylesheet" href="../css/form.css">
-<link rel="stylesheet" href="../css/jquery.countdown.css">
-<script src="../js/jquery.js"></script>
+  <title>Room Bookng</title>
 
-
-<script src="../js/jquery.easing.1.3.js"></script>
-<script src="../js/script.js"></script>
-<script src="../js/jquery.carouFredSel-6.1.0-packed.js"></script>
-<script src="../js/jquery.touchSwipe.min.js"></script>
-<!--[if lt IE 9]>
-<script src="js/html5shiv.js"></script>
-<link rel="stylesheet" media="screen" href="css/ie.css">
-<![endif]-->
+  <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
-<?php
-  require('config.php');
-?>
 <body>
-<header>
-  <div class="container_12">
-    <div class="grid_12">
-      <h1><img src="../images/the-movies-logo-1 (1).gif" width="250" height="300"></h1>
-      <div id="countdown"></div>
-      <div class="clear"></div>
-      <div class="menu_block">
-        <nav>
-          <ul class="sf-menu">
-            <li><a href="../index.php">Home</a></li>
-            <li><a href="contact.php">Contact</a></li>
-            <li class="current"><a href="register.php">Register</a></li>
-            <?php
-              if (!is_login()) { ?>
-                <li><a href="login.php">Login</a></li>
-            <?php } else { ?>
-              <?php if (is_admin()) { ?>
-                <li><a href="admin.php">Admin</a></li>
-              <?php } ?>
-                <li><a href="logout.php">Logout</a></li>
-            <?php } ?>
-          </ul>
-        </nav>
-       <br/'>_____________________________________________<label>DateTime :<input type="datetime-local"/>
-        <div class="clear"></div>
-      </div>
-      <div class="clear"></div>
-    </div>
-  </div>
-</header>
-<div class="content">
-  <div class="container_12">
-    <div class="grid_12 cont1">
-      <div class="box bx2 pb1">
-        <div class="grid_12 ">
-          <h3>Create an Account</h3>
-          <?php
-            if (isset($_POST["submit"]))
-            {
-              $name = mysqli_real_escape_string($connection,$_POST['name']);
-              $password = mysqli_real_escape_string($connection,$_POST['password']);
-              $email = mysqli_real_escape_string($connection,$_POST['email']);
+  <?php
+    include('config.php');
+  ?>
+
+<ul>
+    <li><a href="../index.php" class="active">Home</a></li>
+    <li><a href="register.php">Regsiter</a></li>
+    <?php if (isset($_SESSION['login'])) { ?>
+      <li><a href="reservations.php">Reservations</a></li>
+      <li><a href="logout.php">Logout</a></li>
+      
+      <?php if (isset($_SESSION['is_admin']) && ($_SESSION['is_admin'] == "1")) { ?>
+        <li><a href="admin.php">Admin</a></li>
+      <?php } ?>
     
-              $sql = "INSERT INTO users (name, email, password) values('".$name."', '".$email."', '".md5($password)."')";
-              $result = mysqli_query($connection, $sql);
+    <?php } else { ?>
+      <li><a href="login.php">Login</a></li>
+    <?php } ?>
+  </ul>
+  <?php
+    if (isset($_POST['submit'])) 
+    {
+      $full_name = $_POST['full_name'];
+      $email = $_POST['email'];
+      $password = $_POST['password'];
+      $address = $_POST['address'];
+      $gender = $_POST['gender'];
+      $phonenumber = $_POST['phonenumber'];
 
-              if ($result) {
-                echo "<p style='color: green;'>$name created successfully.</p>";
-              } else {
-                echo "<p style='color: red;'>Something went wrong!</p>";
-              }
-            }
-          ?>
-          
-          <form id="form" action="register.php" method="post" name="myForm" onsubmit="return validateForm()">
-            <fieldset>
-              <label class="name">
-                <input type="text" placeholder="Name:" name="name">
-                <br class="clear">
-              </label>
-              
-              <label class="email">
-                <input type="text" placeholder="E-mail:" name="email">
-                <br class="clear">
-              </label>
-              
-              <label class="password">
-                <input type="password" placeholder="Password:" name="password">
-                <br class="clear">
-              </label>
-              
-              <div class="clear"></div>
-              <div class="btns">
-                <input type="submit" class="col1" name="submit" value="Register">
-                <input type="reset" value="Reset" class="col1">
-                <div class="clear"></div>
-              </div>
-            </fieldset>
-          </form>
-        <div class="clear"></div>
-      </div>
+      $sql = "INSERT INTO users (full_name, phonenumber, address, gender, email, password) VALUES ('".$full_name."', '".$phonenumber."', '".$address."', '".$gender."', '".$email."', '".md5($password)."')";
+      
+      $result = mysqli_query($connection, $sql);
+
+      if ($result) {
+        echo "<p style='color: green;'>The customer added successfully.</p>";
+      } else {
+          echo "<p style='color: red;'>Something went wrong, please try again.</p>";
+      }
+    }
+  ?>
+
+  <h2>Register</h2>
+  <form action="register.php" method="POST">
+    <div class="form-group">
+      <label for="full_name">Full Name</label>
+      <input type="text" name="full_name" id="full_name" placeholder="Please Enter your Full Name">      
     </div>
-  </div>
-</div>
-<footer>
-  <div class="container_12">
-    <div class="grid_12">
-      <div class="socials"> <a href="#"></a> <a href="#"></a> <a href="#"></a> <a href="#"></a> </div>
-      <div class="copy">Shahed Movies &copy; 2045 | <a href="#">Top</a> | Design by: Maram-Lama-Alaa-Amjad-Samhaa</a></div>
+
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" name="email" id="email" placeholder="Please Enter your Email Address">
     </div>
-  </div>
-</footer>
 
-<script>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password" placeholder="Please Enter your Password">
+    </div>
 
-function validateForm() {
-    var name = document.forms["myForm"]["name"].value;
-    var email = document.forms["myForm"]["email"].value;
-    var password = document.forms["myForm"]["password"].value;
-    
-    if (name == "") {
-        alert("Name must be filled out");
-        return false;
-    }
+    <div class="form-group">
+      <label for="phonenumber">Phone number</label>
+      <input type="text" name="phonenumber" id="phonenumber" placeholder="Please Enter your Phone number">
+    </div>
 
-    if (email == "") {
-        alert("Email must be filled out");
-        return false;
-    }
+    <div class="form-group">
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender">
+        <option value="0">Male</option>
+        <option value="1">Female</option>
+      </select>
+    </div>
 
-    if (password == "") {
-      alert("Password must be filled out");
-      return false;
-    }
-    return true;
-}
-</script>
+    <div class="form-group">
+      <label for="address">Address</label>
+      <textarea id="address" name="address"></textarea>
+    </div>
 
+    <input type="submit" name="submit" value="Regsiter">
+  </form>
 </body>
 </html>

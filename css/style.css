@@ -1,0 +1,91 @@
+body {
+	background-color: #4bf5131f;
+}
+
+.form-group {
+	padding: 1%;
+}
+
+.form-group label {
+	display: block;
+}
+
+.form-group input, .form-group select, .form-group textarea {
+	width: 80%;
+	padding: 1%
+}
+
+a {
+	text-decoration: none;
+    background-color: #4bf51359;
+    border: solid 3px #fff;
+    padding: 1%;
+    color: #fff;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+.admin-links {
+	margin: 3% auto;
+}
+
+.admin-paragraph {
+	font-family: sans-serif;
+    font-size: 20px;
+    text-align: center;
+    margin: 100px auto;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 10px;
+}
+th {
+    text-align: left;
+}
+
+.delete {
+	background-color: #f5131359;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+	float: left;
+}
+
+li a {
+  display: block !important;
+  color: white !important;
+  text-align: center !important;
+  padding: 14px 16px !important;
+  text-decoration: none !important;
+  border: 0px !important;
+}
+
+li a:hover:not(.active) {
+    background-color: #111 !important;
+}
+
+.active {
+	background-color: #4CAF50 !important;
+}
+
+.jumbotron { 
+	padding: 30px; /* fills out the jumbotron */
+    background-color: #11111138;
+}
+
+.jumbotron h1, .jumbotron p {
+    color: #fff;
+    text-align: center;
+}
