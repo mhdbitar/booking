@@ -66,6 +66,8 @@
     <?php } else { ?>
       <li><a href="login.php">Login</a></li>
     <?php } ?>
+
+    <li><a href="rooms.php">Rooms</a></li>
   </ul>
   <h1>RESERVATION</h1>
   <h3>Please fill in the booking details as you wish</h3>
@@ -141,7 +143,7 @@
 
 
   <h2>Regular Booking (Weekly)</h2>
-  <form action="index.php" method="post">
+  <form action="search.php" method="post">
     <div class="form-group">
       <label for="room">Room</label>
       <select name="room" id="room">
@@ -153,26 +155,26 @@
     </div>
 
     <div class="form-group">
-      <label for="every-week">Every</label>
-      <select name="every-week" id="every-week">
-        <option value="monday">Monday</option>
-        <option value="tuesday">Tuesday</option>
-        <option value="wednesday">Wednesday</option>
-        <option value="thursday">Thursday</option>
-        <option value="friday">Friday</option>
-        <option value="saturday">Saturday</option>
-        <option value="sunday">Sunday</option>
+      <label for="week">Every</label>
+      <select name="week" id="week">
+        <option value="1">Monday</option>
+        <option value="2">Tuesday</option>
+        <option value="3">Wednesday</option>
+        <option value="4">Thursday</option>
+        <option value="5">Friday</option>
+        <option value="6">Saturday</option>
+        <option value="0">Sunday</option>
       </select>
     </div>
     
     <div class="form-group">
-      <label for="weekly-date">Date</label>
-      <input type="date" id="weekly-date" name="weekly-date">      
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date">      
     </div>
 
     <div class="form-group">
       <label for="weekly-time">Time</label>
-      <select name="weekly-from">
+      <select name="from">
         <option value="09:00AM">09:00 AM</option>
         <option value="10:00AM">10:00 AM</option>
         <option value="11:00AM">11:00 AM</option>
@@ -188,7 +190,7 @@
         <option value="09:00PM">09:00 PM</option>
       </select>
 
-      <select name="weekly-to">
+      <select name="to">
         <option value="09:00AM">09:00 AM</option>
         <option value="10:00AM">10:00 AM</option>
         <option value="11:00AM">11:00 AM</option>
@@ -209,7 +211,7 @@
   </form>
 
     <h2>Regular Booking (Monthly)</h2>
-  <form action="index.php" method="post">
+  <form action="search.php" method="post">
     <div class="form-group">
       <label for="room">Room</label>
       <select name="room" id="room">
@@ -222,25 +224,25 @@
 
     <div class="form-group">
       <label for="every-month">Every</label>
-      <select name="every-month" id="every-month">
-        <option value="monday">Monday</option>
-        <option value="tuesday">Tuesday</option>
-        <option value="wednesday">Wednesday</option>
-        <option value="thursday">Thursday</option>
-        <option value="friday">Friday</option>
-        <option value="saturday">Saturday</option>
-        <option value="sunday">Sunday</option>
+      <select name="week" id="every-month">
+        <option value="1">Monday</option>
+        <option value="2">Tuesday</option>
+        <option value="3">Wednesday</option>
+        <option value="4">Thursday</option>
+        <option value="5">Friday</option>
+        <option value="6">Saturday</option>
+        <option value="0">Sunday</option>
       </select>
     </div>
     
     <div class="form-group">
-      <label for="month-date">Date</label>
-      <input type="date" id="month-date" name="month-date">      
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date">      
     </div>
 
     <div class="form-group">
-      <label for="month-time">Time</label>
-      <select name="month-from">
+      <label for="time">Time</label>
+      <select name="from">
         <option value="09:00AM">09:00 AM</option>
         <option value="10:00AM">10:00 AM</option>
         <option value="11:00AM">11:00 AM</option>
@@ -256,7 +258,7 @@
         <option value="09:00PM">09:00 PM</option>
       </select>
 
-      <select name="month-to">
+      <select name="to">
         <option value="09:00AM">09:00 AM</option>
         <option value="10:00AM">10:00 AM</option>
         <option value="11:00AM">11:00 AM</option>

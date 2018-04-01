@@ -23,6 +23,8 @@
     <?php } else { ?>
       <li><a href="pages/login.php">Login</a></li>
     <?php } ?>
+
+    <li><a href="pages/rooms.php">Rooms</a></li>
   </ul>
 
   <div class="jumbotron">

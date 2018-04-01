@@ -6,10 +6,31 @@
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
+	<?php
+    include('config.php');
+  ?>
+  <ul>
+    <li><a href="../index.php" class="active">Home</a></li>
+    <li><a href="register.php">Regsiter</a></li>
+    <?php if (isset($_SESSION['login'])) { ?>
+      <li><a href="reservations.php">Reservations</a></li>
+      <li><a href="logout.php">Logout</a></li>
+      
+      <?php if (isset($_SESSION['is_admin']) && ($_SESSION['is_admin'] == "1")) { ?>
+        <li><a href="admin.php">Admin</a></li>
+      <?php } ?>
+    
+    <?php } else { ?>
+      <li><a href="login.php">Login</a></li>
+    <?php } ?>
+
+      <li><a href="rooms.php">Rooms</a></li>
+  </ul>
+
 	<h2>Book Here</h2>
 	<p>Please insert your information to book this room.</p>
 	<?php
-		include('config.php');
+
 		$room_id = $_GET['id'];
 		$date = $_GET['date'];
 		$from = $_GET['from'];
@@ -19,8 +40,13 @@
 		{
 			$name = $_POST['name'];
 			$notes = $_POST['notes'];
+			$repeat_week = $_POST['repeat_week'];
+			$repeat_month = $_POST['repeat_month'];
 
-      		$sql = "INSERT INTO reservations (room_id, reservation_date, from_time, to_time, name, notes) VALUES ('".$room_id."', '".$date."', '".$from."', '".$to."', '".$name."', '".$notes."')";
+			$week = date('w', strtotime($date));
+			$month = date('m', strtotime($date));
+			
+      		$sql = "INSERT INTO reservations (room_id, reservation_date, from_time, to_time, name, notes, week, month, repeat_week, repeat_month) VALUES ('".$room_id."', '".$date."', '".$from."', '".$to."', '".$name."', '".$notes."', '".$week."', '".$month."', '".$repeat_week."', '".$repeat_month."')";
       
       		$result = mysqli_query($connection, $sql);
 
@@ -40,6 +66,22 @@
 		<div class="form-group">
 			<label for="notes">Customer Notes</label>
 			<textarea name="notes" id="notes" placeholder="Please Enter your notes."></textarea>
+		</div>
+
+		<div class="form-group">
+			<label for="repeat_week">Frequency - Week</label>
+			<select name="repeat_week">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</select>
+		</div>
+
+		<div class="form-group">
+			<label for="repeat_month">Frequency - Month</label>
+			<select name="repeat_month">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</select>
 		</div>
 
 		<input type="submit" name="submit" value="Submit">

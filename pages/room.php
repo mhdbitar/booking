@@ -7,6 +7,28 @@
 </head>
 <body>
 
+<?php
+        include('config.php');
+  ?>
+  
+<ul>
+    <li><a href="../index.php" class="active">Home</a></li>
+    <li><a href="register.php">Regsiter</a></li>
+    <?php if (isset($_SESSION['login'])) { ?>
+      <li><a href="reservations.php">Reservations</a></li>
+      <li><a href="logout.php">Logout</a></li>
+      
+      <?php if (isset($_SESSION['is_admin']) && ($_SESSION['is_admin'] == "1")) { ?>
+        <li><a href="admin.php">Admin</a></li>
+      <?php } ?>
+    
+    <?php } else { ?>
+      <li><a href="login.php">Login</a></li>
+    <?php } ?>
+
+    <li><a href="rooms.php">Rooms</a></li>
+  </ul>
+
   <h2>Room Management</h2>
   <div class="admin-links">
     <a href="room.php">Rooms</a>
@@ -20,7 +42,6 @@
     <th>Actions</th>
   </tr>
   <?php
-    include('config.php');
 
     $sql = "SELECT * FROM rooms";
     $rooms = mysqli_query($connection, $sql);
@@ -44,7 +65,10 @@
       $room_number = $_POST['room_number'];
       $description = $_POST['description'];
 
-      $sql = "INSERT INTO rooms (room_number, description) VALUES ('".$room_number."', '".$description."')";
+      if (move_uploaded_file($_FILES['image']["tmp_name"], "../img/" . basename($_FILES["image"]['name']))) {
+            }
+
+      $sql = "INSERT INTO rooms (room_number, description, image) VALUES ('".$room_number."', '".$description."', '".$_FILES["image"]['name']."')";
     
       $result = mysqli_query($connection, $sql);
 
@@ -56,7 +80,7 @@
       }
     }
   ?>
-  <form action="room.php" method="POST">
+  <form action="room.php" method="POST" enctype="multipart/form-data">
     <div class="form-group">
       <label for="room_number">Room number</label>
       <input type="number" name="room_number" id="room_number" placeholder="Please Enter Room Number">      
@@ -65,6 +89,11 @@
     <div class="form-group">
       <label for="description">Room Description</label>
       <textarea id="description" name="description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="image">Room Image</label>
+      <input type="file" name="image">
     </div>
 
     <input type="submit" name="submit" value="Add Room">
