@@ -35,38 +35,33 @@
       $result = mysqli_query($connection, $sql);
 
       if ($result->num_rows == 1) {
-        while ($row = mysqli_fetch_assoc($result)) {
-          if (password_verify($password, $row['password'])) {
-            $_SESSION['login'] = 1;
-            $_SESSION['user_id'] = $row['id'];
-            $_SESSION['is_admin'] = $row['is_admin'];
-           
-            if ($row['is_admin'] == "1") {
-              header("location: admin.php");
-            } else {
-              header("location: ../index.php");
-            }
-          }
-        }
+        $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+        $sql = "UPDATE users SET password = '".$password."' WHERE email = '".$email."'";
+        $result = mysqli_query($connection, $sql);
+        
+        header("location: login.php");
+      } else {
+        echo "<p style='color: red;'>Something went wrong, please try again.</p>";
+        header("location: ../index.php");
       }
     }
   ?>
 
   <h2>Login</h2>
-  <form action="login.php" method="POST">
+  <form action="forget.php" method="POST">
     <div class="form-group">
       <label for="email">Email</label>
       <input type="email" name="email" id="email" placeholder="Please Enter your Email Address">
     </div>
 
     <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password" placeholder="Please Enter your Password">
+      <label for="password">New Password</label>
+      <input type="password" name="password" id="password" placeholder="Please Enter your new password">
     </div>
 
     <br>
-    <input type="submit" name="submit" value="Login">
-    <a href="forget.php" style="background-color: transparent; border: 0px; color: red;">Forget password</a>
+    <input type="submit" name="submit" value="Change Password">
   </form>
 </body>
 </html>

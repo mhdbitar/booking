@@ -40,39 +40,96 @@
     if (isset($_POST['submit'])) 
     {
       $approved = $_POST['approved'];
-      $weekly = $_POST['repeat_week'];
-      $monthly = $_POST['repeat_month'];
-      
-      $sql = "UPDATE reservations SET approved = '".$approved."', repeat_week = '".$weekly."', repeat_month = '".$monthly."' WHERE reservation_id = " . $_GET['id'];
-    
+      $date = $_POST['date'];
+      $from = $_POST['from'];
+      $to = $_POST['to'];
+
+      $sql = "SELECT * FROM reservations WHERE room_id = '".$_GET['id']."' AND reservation_date = '".$date."' AND from_time = '".$from."' OR to_time >= '".$from."'";
       $result = mysqli_query($connection, $sql);
 
-      header("location: booking.php");
+      if ($result->num_rows == 0) {
+        $sql = "UPDATE reservations SET approved = '".$approved."', reservation_date = '".$date."', from_time = '".$from."', to_time = '".$to."' WHERE reservation_id = " . $_GET['id'];
+        $result = mysqli_query($connection, $sql);
+
+        header("location: booking.php");
+      } else {
+        echo "<p style='color: red;'>You can not update your reservation.</p>";
+      }
     }
   ?>
   <form action="editReservation.php?id=<?= $_GET['id'] ?>" method="POST">
+
+    <?php
+      $sql = "SELECT * FROM reservations WHERE reservation_id = '".$_GET['id']."'";
+      $result = mysqli_query($connection, $sql);
+
+      $date = "";
+      $from = "";
+      $to = "";
+      $approved = 0;
+      while ($row = mysqli_fetch_assoc($result)) {
+        $date = $row['reservation_date'];
+        $from = $row['from_time'];
+        $to = $row['to_time'];
+        $approved = $row['approved'];
+      }
+
+      $time = array(
+          "9" => "09:00 AM",
+          "10" => "10:00 AM",
+          "11" => "11:00 AM",
+          "12" => "12:00 AM",
+          "13" => "01:00 PM",
+          "14" => "02:00 PM",
+          "15" => "03:00 PM",
+          "16" => "04:00 PM",
+          "17" => "05:00 PM",
+          "18" => "06:00 PM",
+          "19" => "07:00 PM",
+          "20" => "08:00 PM",
+          "21" => "09:00 PM"
+      );
+    ?>
     <div class="form-group">
         <label for="approved">Approved</label>
         <select name="approved" id="approved">
-          <option value="1">Yes</option>
-          <option value="0">No</option>
+          <?php if ($approved == 1) { ?>
+            <option value="1" selected="selected">Yes</option>
+            <option value="0">No</option>
+           <?php } else { ?> 
+             <option value="1">Yes</option>
+             <option value="0" selected="selected">No</option>
+           <?php } ?> 
         </select>      
     </div>
 
     <div class="form-group">
-        <label for="weekly">Weekly Frequency</label>
-        <select name="repeat_week" id="weekly">
-          <option value="1">Yes</option>
-          <option value="0">No</option>
-        </select>      
+      <label for="date">Date</label>
+      <input type="date" id="date" name="date" value="<?= $date ?>">      
     </div>
 
     <div class="form-group">
-        <label for="monthly">Monthly Frequency</label>
-        <select name="repeat_month" id="monthly">
-          <option value="1">Yes</option>
-          <option value="0">No</option>
-        </select>      
+      <label for="from">Time</label>
+      <select name="from" id="from">
+        <?php foreach ($time as $key => $value) { ?>
+          <?php if ($key == $from) { ?>
+            <option value="<?= $key ?>" selected="selected"><?= $value ?></option>
+          <?php } else { ?>
+            <option value="<?= $key ?>"><?= $value ?></option>
+          <?php } ?>
+        <?php } ?>
+      </select>
+
+      <label for="to">To</label>
+      <select name="to">
+        <?php foreach ($time as $key => $value) { ?>
+          <?php if ($key == $to) { ?>
+            <option value="<?= $key ?>" selected="selected"><?= $value ?></option>
+          <?php } else { ?>
+            <option value="<?= $key ?>"><?= $value ?></option>
+          <?php } ?>
+        <?php } ?>  
+      </select>
     </div>
 
     <input type="submit" name="submit" value="Edit">

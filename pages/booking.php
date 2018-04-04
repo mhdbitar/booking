@@ -42,14 +42,12 @@
     <th>Reservation date</th>
     <th>From (time)</th>
     <th>To (time)</th>
-    <th>Monthly Frequency</th>
-    <th>Weekly Frequency</th>
     <th>Approved</th>
     <th>Actions</th>
   </tr>
   <?php
 
-    $sql = "SELECT * FROM reservations INNER JOIN rooms ON reservations.room_id = rooms.id";
+    $sql = "SELECT * FROM reservations INNER JOIN rooms ON reservations.room_id = rooms.id INNER JOIN users ON users.id = reservations.user_id";
     $rooms = mysqli_query($connection, $sql);
     
     if ($rooms->num_rows > 0) { 
@@ -57,20 +55,11 @@
          echo "<tr>";
           echo "<td>".$row['reservation_id']."</td>";
           echo "<td>".$row['room_number']."</td>";
-          echo "<td>".$row['name']."</td>";
+          echo "<td>".$row['full_name']."</td>";
           echo "<td>".$row['reservation_date']."</td>";
           echo "<td>".$row['from_time']."</td>";
           echo "<td>".$row['to_time']."</td>";
-          if ($row['repeat_month'] == "1") {
-              echo "<td>Yes</td>";
-          } else {
-              echo "<td>No</td>";
-          }
-          if ($row['repeat_week'] == "1") {
-              echo "<td>Yes</td>";
-          } else {
-              echo "<td>No</td>";
-          }
+        
           if ($row['approved'] == "1") {
             echo "<td>Yes</td>";
           } else {

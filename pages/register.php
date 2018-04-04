@@ -25,17 +25,18 @@
       <li><a href="login.php">Login</a></li>
     <?php } ?>
   </ul>
+
   <?php
     if (isset($_POST['submit'])) 
     {
       $full_name = $_POST['full_name'];
       $email = $_POST['email'];
-      $password = $_POST['password'];
+      $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
       $address = $_POST['address'];
       $gender = $_POST['gender'];
       $phonenumber = $_POST['phonenumber'];
 
-      $sql = "INSERT INTO users (full_name, phonenumber, address, gender, email, password) VALUES ('".$full_name."', '".$phonenumber."', '".$address."', '".$gender."', '".$email."', '".md5($password)."')";
+      $sql = "INSERT INTO users (full_name, phonenumber, address, gender, email, password) VALUES ('".$full_name."', '".$phonenumber."', '".$address."', '".$gender."', '".$email."', '".$password."')";
       
       $result = mysqli_query($connection, $sql);
 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2018 at 11:50 AM
+-- Generation Time: Apr 04, 2018 at 10:30 PM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -31,30 +31,22 @@ SET time_zone = "+00:00";
 CREATE TABLE `reservations` (
   `reservation_id` int(11) NOT NULL,
   `room_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   `reservation_date` date NOT NULL,
   `from_time` varchar(255) NOT NULL,
   `to_time` varchar(255) NOT NULL,
-  `name` varchar(255) NOT NULL,
-  `notes` text NOT NULL,
-  `approved` tinyint(4) NOT NULL DEFAULT '0',
-  `week` int(11) DEFAULT NULL,
-  `month` int(11) DEFAULT NULL,
-  `repeat_week` tinyint(4) NOT NULL DEFAULT '0',
-  `repeat_month` tinyint(4) NOT NULL DEFAULT '0'
+  `approved` tinyint(4) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`reservation_id`, `room_id`, `reservation_date`, `from_time`, `to_time`, `name`, `notes`, `approved`, `week`, `month`, `repeat_week`, `repeat_month`) VALUES
-(2, 1, '2018-03-22', '11:00AM', '07:00PM', 'Emma Watson', 'hdjshjfh sdjfhj hfjhsd j', 1, NULL, NULL, 0, 0),
-(3, 11, '2018-04-28', '09:00AM', '08:00PM', '', '', 0, 6, NULL, 0, 0),
-(4, 1, '2018-04-12', '09:00AM', '05:00PM', 'hdhsahsh', 'ksajdkj sakjdk sa', 0, 4, 4, 0, 0),
-(5, 1, '2018-04-12', '09:00AM', '05:00PM', 'hdhsahsh', 'ksajdkj sakjdk sa', 1, 4, 4, 0, 0),
-(6, 1, '2018-04-12', '09:00AM', '05:00PM', 'sdjha jsh', 'hfhdsjfhjd', 0, 4, 4, 0, 0),
-(7, 1, '2018-04-12', '09:00AM', '05:00PM', 'sdjha jsh', 'hfhdsjfhjd', 1, 4, 4, 1, 1),
-(8, 1, '2018-04-12', '09:00AM', '05:00PM', 'kjfksdjk', 'kjksjfkd', 0, 4, 4, 1, 0);
+INSERT INTO `reservations` (`reservation_id`, `room_id`, `user_id`, `reservation_date`, `from_time`, `to_time`, `approved`) VALUES
+(54, 1, 7, '2018-04-02', '9', '11', 1),
+(55, 1, 7, '2018-04-09', '9', '11', 0),
+(56, 1, 7, '2018-04-16', '9', '11', 0),
+(61, 1, 7, '2018-04-05', '9', '11', 0);
 
 -- --------------------------------------------------------
 
@@ -100,8 +92,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `phonenumber`, `address`, `gender`, `email`, `password`, `is_admin`) VALUES
-(1, 'Sara Malas', '0653521215', 'shdjhsaj', 1, 'sara@test.com', '098f6bcd4621d373cade4e832627b4f6', 0),
-(2, 'Admin', '0653521215', 'sdhjsahj dhjsa', 0, 'admin@admin.com', '21232f297a57a5a743894a0e4a801fc3', 1);
+(6, 'Admin', '0653521215', 'Test', 1, 'admin@admin.com', '$2y$10$edQ3xNJRyV8tnInArud0h.Z.cu/C6CtNMpkzMq1HwlwHig/h74Y/.', 1),
+(7, 'Sara Malas', '0653521215', 'test', 1, 'sara@test.com', '$2y$10$tNSGd79w4r0c/G4HB8ZS0uoiMKMzKxYTQW0FuGJ/D.dBm.tmD8/mi', 0);
 
 --
 -- Indexes for dumped tables
@@ -112,7 +104,8 @@ INSERT INTO `users` (`id`, `full_name`, `phonenumber`, `address`, `gender`, `ema
 --
 ALTER TABLE `reservations`
   ADD PRIMARY KEY (`reservation_id`),
-  ADD KEY `room_id` (`room_id`);
+  ADD KEY `room_id` (`room_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- Indexes for table `rooms`
@@ -134,7 +127,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
 
 --
 -- AUTO_INCREMENT for table `rooms`
@@ -146,7 +139,7 @@ ALTER TABLE `rooms`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
@@ -156,7 +149,8 @@ ALTER TABLE `users`
 -- Constraints for table `reservations`
 --
 ALTER TABLE `reservations`
-  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`);
+  ADD CONSTRAINT `reservations_ibfk_1` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`),
+  ADD CONSTRAINT `reservations_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

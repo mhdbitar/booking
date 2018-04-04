@@ -2,7 +2,6 @@
 <html>
 <head>
 	<title>Room Booking</title>
-
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
@@ -28,63 +27,88 @@
   </ul>
 
 	<h2>Book Here</h2>
-	<p>Please insert your information to book this room.</p>
+	 
 	<?php
 
 		$room_id = $_GET['id'];
 		$date = $_GET['date'];
 		$from = $_GET['from'];
 		$to = $_GET['to'];
+		$week = $_GET['week'];
+		$month = $_GET['month'];
+		$duration = $_GET['duration'];
+		$start_week = $_GET['start_week'];
 		
-		if (isset($_POST['submit']))
-		{
-			$name = $_POST['name'];
-			$notes = $_POST['notes'];
-			$repeat_week = $_POST['repeat_week'];
-			$repeat_month = $_POST['repeat_month'];
+		if ($week != "0") {
+			$date = new DateTime($_GET['date']);
+			$thisMonth = $date->format('m');
+			$i = 1;
 
-			$week = date('w', strtotime($date));
-			$month = date('m', strtotime($date));
-			
-      		$sql = "INSERT INTO reservations (room_id, reservation_date, from_time, to_time, name, notes, week, month, repeat_week, repeat_month) VALUES ('".$room_id."', '".$date."', '".$from."', '".$to."', '".$name."', '".$notes."', '".$week."', '".$month."', '".$repeat_week."', '".$repeat_month."')";
-      
-      		$result = mysqli_query($connection, $sql);
+			$sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date->format('Y-m-d')."'";
+			$result = mysqli_query($connection, $sql);
 
-	      	if ($result) {
-	        	echo "<p style='color: green;'>This room is reserved by you.</p>";
-	      	} else {
-	          echo "<p style='color: red;'>Something went wrong, please try again.</p>";
-	      	}
+			if ($result->num_rows == 0) {
+				while ($date->format('m') === $thisMonth) {
+					$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."')";
+			  		$result = mysqli_query($connection, $sql);
+				    $date->modify('next ' . $_GET['week']);
+					if ($duration == $i) {
+						break;
+					}
+					$i++;
+				}
+			} else {
+				echo "<p style='color: red;'>You can not book this room, this room is booked by someone else.</p>";
+			}
 		}
-	?>
-	<form action="book.php?id=<?= $room_id ?>&date=<?= $date ?>&from=<?= $from ?>&to=<?= $to ?>" method="post">
-		<div class="form-group">
-			<label for="name">Customer Name</label>
-			<input type="text" name="name" placeholder="Please Enter Customer Name">
-		</div>
 
-		<div class="form-group">
-			<label for="notes">Customer Notes</label>
-			<textarea name="notes" id="notes" placeholder="Please Enter your notes."></textarea>
-		</div>
+		if ($month != "0") {
+			$week_num = week_number($date);
+			$num = abs($week_num - $start_week) * 7;
+			$date = strtotime($date);
+			$date = strtotime("+$num day", $date);
+			$date =  date('Y-m-d', $date);
 
-		<div class="form-group">
-			<label for="repeat_week">Frequency - Week</label>
-			<select name="repeat_week">
-				<option value="0">No</option>
-				<option value="1">Yes</option>
-			</select>
-		</div>
+			$date = new DateTime($date);
+			$thisYear = $date->format('y');
+			$i = 1; 
 
-		<div class="form-group">
-			<label for="repeat_month">Frequency - Month</label>
-			<select name="repeat_month">
-				<option value="0">No</option>
-				<option value="1">Yes</option>
-			</select>
-		</div>
+			$sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date->format('Y-m-d')."'";
+			$result = mysqli_query($connection, $sql);
 
-		<input type="submit" name="submit" value="Submit">
-	</form>
+			if ($result->num_rows == 0) {
+				while ($date->format('y') === $thisYear) {
+					$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."')";
+			  		$result = mysqli_query($connection, $sql);
+				    $date->modify('next month');
+					if ($duration == $i) {
+						break;
+					}
+					$i++;
+				}
+			} else {
+				echo "<p style='color: red;'>You can not book this room, this room is booked by someone else.</p>";
+			}
+						
+		}
+
+		if ($month == 0 && $week == 0) {
+			$sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date."'";
+			$result = mysqli_query($connection, $sql);
+			
+			if ($result->num_rows == 0) {
+				$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date."', '".$from."', '".$to."')";
+				$result = mysqli_query($connection, $sql);
+			} else {
+				echo "<p style='color: red;'>You can not book this room, this room is booked by someone else.</p>";
+			}
+		}
+
+		function week_number($date) 
+		{ 
+	    	return ceil( date( 'j', strtotime( $date ) ) / 7 ); 
+		} 
+	?>  
+	
 </body>
 </html>
