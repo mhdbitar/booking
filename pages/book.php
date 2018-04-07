@@ -24,6 +24,8 @@
 			}
 			$i++;
 		}
+
+		echo json_encode("true");
 	}
 
 	if ($month != "0") {
@@ -33,30 +35,41 @@
 		$date = strtotime("+$num day", $date);
 		$date =  date('Y-m-d', $date);
 
-		$date = new DateTime($date);
-		$thisYear = $date->format('y');
-		$i = 1; 
+		$dayOfDate = date('l', strtotime($date));
 
-		while ($date->format('y') === $thisYear) {
-			$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."')";
-	  		$result = mysqli_query($connection, $sql);
-		    $date->modify('next month');
-			if ($duration == $i) {
-				break;
+		if ($dayOfDate == $month) {
+			$date = new DateTime($date);
+			$thisYear = $date->format('y');
+			$i = 1; 
+
+			while ($date->format('y') === $thisYear) {
+				$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."')";
+		  		$result = mysqli_query($connection, $sql);
+			    $date->modify('next month');
+				if ($duration == $i) {
+					break;
+				}
+				$i++;
 			}
-			$i++;
+
+			echo json_encode("true");
+			
+		} else {
+			echo json_encode("Day does not match the start date.");
 		}						
 	}
 
 	if ($month == 0 && $week == 0) {
 		$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date."', '".$from."', '".$to."')";
 		$result = mysqli_query($connection, $sql);
+
+		if ($result) {
+			echo json_encode("true");
+		}
 	}
 
 	function week_number($date) 
 	{ 
     	return ceil( date( 'j', strtotime( $date ) ) / 7 ); 
-	}
-
-	return true; 
+	} 
 ?> 
