@@ -29,14 +29,15 @@
   <?php
     if (isset($_POST['submit'])) 
     {
+      $salt = generateRandomString();
       $full_name = $_POST['full_name'];
       $email = $_POST['email'];
-      $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+      $password = password_hash($_POST['password'].$salt, PASSWORD_BCRYPT);
       $address = $_POST['address'];
       $gender = $_POST['gender'];
       $phonenumber = $_POST['phonenumber'];
-
-      $sql = "INSERT INTO users (full_name, phonenumber, address, gender, email, password) VALUES ('".$full_name."', '".$phonenumber."', '".$address."', '".$gender."', '".$email."', '".$password."')";
+      
+      $sql = "INSERT INTO users (full_name, phonenumber, address, gender, email, password, salt) VALUES ('".$full_name."', '".$phonenumber."', '".$address."', '".$gender."', '".$email."', '".$password."', '".$salt."')";
       
       $result = mysqli_query($connection, $sql);
 
@@ -45,6 +46,16 @@
       } else {
           echo "<p style='color: red;'>Something went wrong, please try again.</p>";
       }
+    }
+
+    function generateRandomString($length = 10) {
+      $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $charactersLength = strlen($characters);
+      $randomString = '';
+      for ($i = 0; $i < $length; $i++) {
+          $randomString .= $characters[rand(0, $charactersLength - 1)];
+      }
+      return $randomString;
     }
   ?>
 

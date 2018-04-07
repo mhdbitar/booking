@@ -33,6 +33,7 @@
   <div class="admin-links">
     <a href="room.php">Rooms</a>
     <a href="booking.php">Reservations</a>  
+    <a href='timetable.php'>Timetable</a>
   </div>
   <table style="width:100%">
   <tr>

@@ -33,7 +33,9 @@
   <div class="admin-links">
     <a href="room.php">Rooms</a>
     <a href="booking.php">Reservations</a>  
+    <a href='timetable.php'>Timetable</a>
   </div>
+
   <table style="width:100%">
   <tr>
     <th>#</th>
@@ -65,7 +67,7 @@
           } else {
             echo "<td>No</td>";
           }
-          echo "<td><a href='deleteReservation.php?id=".$row['reservation_id']."' class='delete'>Delete</a> <a href='editReservation.php?id=".$row['reservation_id']."'>Edit</a></td>";
+          echo "<td><a href='deleteReservation.php?id=".$row['reservation_id']."' class='delete'>Delete</a> <a href='editReservation.php?id=".$row['reservation_id']."'>Edit</a><a href='approve.php?id=".$row['reservation_id']."' class='approve'>Approve</a></td>";
          echo "</tr>";
       }
     }

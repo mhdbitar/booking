@@ -36,7 +36,7 @@
 
       if ($result->num_rows == 1) {
         while ($row = mysqli_fetch_assoc($result)) {
-          if (password_verify($password, $row['password'])) {
+          if (password_verify($password.$row['salt'], $row['password'])) {
             $_SESSION['login'] = 1;
             $_SESSION['user_id'] = $row['id'];
             $_SESSION['is_admin'] = $row['is_admin'];

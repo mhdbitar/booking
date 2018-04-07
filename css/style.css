@@ -51,6 +51,10 @@ th {
 	background-color: #f5131359;
 }
 
+.approve {
+  background-color: #131af570;
+}
+
 ul {
   list-style-type: none;
   margin: 0;

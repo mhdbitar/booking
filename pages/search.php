@@ -102,7 +102,26 @@
         var start_week = $(this).data("start_week");
         
         if (x == true) {
-            window.location.replace("book.php?id="+room_id+"&date="+date+"&from="+from+"&to="+to+"&week="+week+"&month="+month+"&duration="+duration+"&start_week="+start_week);
+          $.ajax({
+            type: "POST",
+            url: "book.php",
+            data: {
+              room_id: room_id,
+              date: date,
+              from: from,
+              to: to,
+              week: week,
+              month: month,
+              duration: duration,
+              start_week: start_week
+            },
+            success: function (date) {
+              location.replace("reservations.php");
+            },
+            error: function (error) {
+              console.log("the error: " + error);
+            }
+          });
         }
     });
   });

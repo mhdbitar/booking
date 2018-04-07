@@ -39,7 +39,6 @@
   
     if (isset($_POST['submit'])) 
     {
-      $approved = $_POST['approved'];
       $date = $_POST['date'];
       $from = $_POST['from'];
       $to = $_POST['to'];
@@ -48,7 +47,7 @@
       $result = mysqli_query($connection, $sql);
 
       if ($result->num_rows == 0) {
-        $sql = "UPDATE reservations SET approved = '".$approved."', reservation_date = '".$date."', from_time = '".$from."', to_time = '".$to."' WHERE reservation_id = " . $_GET['id'];
+        $sql = "UPDATE reservations SET reservation_date = '".$date."', from_time = '".$from."', to_time = '".$to."' WHERE reservation_id = " . $_GET['id'];
         $result = mysqli_query($connection, $sql);
 
         header("location: booking.php");
@@ -66,12 +65,10 @@
       $date = "";
       $from = "";
       $to = "";
-      $approved = 0;
       while ($row = mysqli_fetch_assoc($result)) {
         $date = $row['reservation_date'];
         $from = $row['from_time'];
         $to = $row['to_time'];
-        $approved = $row['approved'];
       }
 
       $time = array(
@@ -90,18 +87,6 @@
           "21" => "09:00 PM"
       );
     ?>
-    <div class="form-group">
-        <label for="approved">Approved</label>
-        <select name="approved" id="approved">
-          <?php if ($approved == 1) { ?>
-            <option value="1" selected="selected">Yes</option>
-            <option value="0">No</option>
-           <?php } else { ?> 
-             <option value="1">Yes</option>
-             <option value="0" selected="selected">No</option>
-           <?php } ?> 
-        </select>      
-    </div>
 
     <div class="form-group">
       <label for="date">Date</label>

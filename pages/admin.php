@@ -30,10 +30,11 @@
 
   <h2>Control Panel</h2>
 
-  <div class="admin-links">
+<div class="admin-links">
     <a href="room.php">Rooms</a>
     <a href="booking.php">Reservations</a>  
-  </div>
+    <a href='timetable.php'>Timetable</a>
+</div>
 
   <p class="admin-paragraph">Here in this page the admin can manage the rooms and reservations for all the customers...</p>
 </body>
