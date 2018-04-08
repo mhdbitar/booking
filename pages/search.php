@@ -116,7 +116,6 @@
               start_week: start_week
             },
             success: function (data) {
-              alert(data);
               location.replace("reservations.php");
             },
             error: function (error) {
