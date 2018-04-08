@@ -36,7 +36,7 @@
     $from = $_POST['from'];
     $to = $_POST['to'];
 
-    $sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date."' AND from_time = '".$from."' OR to_time >= '".$from."'";
+    $sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date."' AND from_time = '".$from."' AND to_time >= '".$from."'";
     $result = mysqli_query($connection, $sql);
 
     if ($result->num_rows == 0) {
@@ -54,7 +54,7 @@
         $to = $_POST['to'];
         $duration = $_POST['duration'];
 
-        $sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date."' AND from_time = '".$from."' OR to_time >= '".$from."'";
+        $sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date."' AND from_time = '".$from."' AND to_time >= '".$from."'";
         $result = mysqli_query($connection, $sql);
 
         if ($result->num_rows == 0) {
@@ -73,7 +73,7 @@
         $duration = $_POST['duration'];
         $start_week = $_POST['start_week'];
 
-        $sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date."' AND from_time = '".$from."' OR to_time >= '".$from."'";
+        $sql = "SELECT * FROM reservations WHERE room_id = '".$room_id."' AND reservation_date = '".$date."' AND from_time = '".$from."' AND to_time >= '".$from."'";
         $result = mysqli_query($connection, $sql);
 
         if ($result->num_rows == 0) {

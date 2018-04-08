@@ -67,7 +67,7 @@
           } else {
             echo "<td>No</td>";
           }
-          echo "<td><a href='deleteReservation.php?id=".$row['reservation_id']."' class='delete'>Delete</a> <a href='editReservation.php?id=".$row['reservation_id']."'>Edit</a><a href='approve.php?id=".$row['reservation_id']."' class='approve'>Approve</a></td>";
+          echo "<td><a href='deleteReservation.php?id=".$row['reservation_id']."' class='delete'>Delete</a> <a href='editReservation.php?id=".$row['reservation_id']."&room_id=".$row['room_id']."'>Edit</a><a href='approve.php?id=".$row['reservation_id']."' class='approve'>Approve</a></td>";
          echo "</tr>";
       }
     }
