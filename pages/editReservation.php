@@ -43,7 +43,7 @@
       $from = $_POST['from'];
       $to = $_POST['to'];
 
-      $sql = "SELECT * FROM reservations WHERE room_id = '".$_GET['room_id']."' AND reservation_date = '".$date."' AND from_time = '".$from."' OR to_time >= '".$from."'";
+      $sql = "SELECT * FROM reservations WHERE room_id = '".$_GET['room_id']."' AND reservation_date = '".$date."' AND from_time = '".$from."' AND to_time >= '".$from."'";
       $result = mysqli_query($connection, $sql);
 
       if ($result->num_rows == 0) {
