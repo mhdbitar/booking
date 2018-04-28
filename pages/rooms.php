@@ -3,6 +3,7 @@
 <head>
   <title>Room Booking</title>
 
+  <link rel="stylesheet" type="text/css" href="../css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
   <link rel="stylesheet" href="../css/w3.css">
 </head>
@@ -12,13 +13,19 @@
   ?>
 
   <ul>
-    <li><a href="index.php">Home</a></li>
+    <li><a href="../index.php">Home</a></li>
     <li><a href="register.php">Regsiter</a></li>
     <?php if (isset($_SESSION['login'])) { ?>
       <li><a href="reservations.php">Reservations</a></li>
       <li><a href="logout.php">Logout</a></li>
       <?php if (isset($_SESSION['is_admin']) && ($_SESSION['is_admin'] == "1")) { ?>
         <li><a href="admin.php">Admin</a></li>
+        <?php
+          $sql = "SELECT * FROM notifications WHERE seen = 0";
+          $result = mysqli_query($connection, $sql);
+        ?>
+        <li style="float:right;"><a href="notification.php"><i class="fas fa-bell"></i> <?=  $result->num_rows > 0 ? $result->num_rows : "" ?>
+          </a></li>
       <?php } ?>
     
     <?php } else { ?>

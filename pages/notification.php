@@ -35,14 +35,30 @@
       <li><a href="rooms.php">Rooms</a></li>
   </ul>
 
-  <h2>Control Panel</h2>
+  <h2>Notifications</h2>
 
-<div class="admin-links">
-    <a href="room.php">Rooms</a>
-    <a href="booking.php">Reservations</a>  
-    <a href='timetable.php'>Timetable</a>
-</div>
+  <table style="width:100%">
+  <tr>
+    <th>Customer</th> 
+    <th>Room Number</th>
+    <th>Actions</th>
+  </tr>
+  <?php
 
-  <p class="admin-paragraph">Here in this page the admin can manage the rooms and reservations for all the customers...</p>
+    $sql = "SELECT * FROM notifications WHERE seen = 0";
+    $notifications = mysqli_query($connection, $sql);
+    
+    if ($notifications->num_rows > 0) { 
+      while ($row = mysqli_fetch_assoc($notifications)) {
+         echo "<tr>";
+          echo "<td>".$row['customer']."</td>";
+          echo "<td>".$row['room']."</td>";
+          echo "<td><a href='seen.php?id=".$row['id']."' class='delete'>Seen</a></td>";
+         echo "</tr>";
+      }
+    }
+  ?>
+</table>
+
 </body>
 </html>

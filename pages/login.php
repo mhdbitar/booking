@@ -3,6 +3,7 @@
 <head>
   <title>Room Bookng</title>
 
+  <link rel="stylesheet" type="text/css" href="../css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
@@ -18,6 +19,12 @@
       
       <?php if (isset($_SESSION['is_admin']) && ($_SESSION['is_admin'] == "1")) { ?>
         <li><a href="admin.php">Admin</a></li>
+        <?php
+          $sql = "SELECT * FROM notifications WHERE seen = 0";
+          $result = mysqli_query($connection, $sql);
+        ?>
+        <li style="float:right;"><a href="notification.php"><i class="fas fa-bell"></i> <?=  $result->num_rows > 0 ? $result->num_rows : "" ?>
+          </a></li>
       <?php } ?>
     
     <?php } else { ?>
@@ -39,6 +46,7 @@
           if (password_verify($password.$row['salt'], $row['password'])) {
             $_SESSION['login'] = 1;
             $_SESSION['user_id'] = $row['id'];
+            $_SESSION['user_name'] = $row['full_name'];
             $_SESSION['is_admin'] = $row['is_admin'];
            
             if ($row['is_admin'] == "1") {

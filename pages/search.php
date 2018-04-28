@@ -3,6 +3,7 @@
 <head>
   <title>Room Booking</title>
 
+  <link rel="stylesheet" type="text/css" href="../css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
@@ -19,6 +20,12 @@
       
       <?php if (isset($_SESSION['is_admin']) && ($_SESSION['is_admin'] == "1")) { ?>
         <li><a href="admin.php">Admin</a></li>
+        <?php
+          $sql = "SELECT * FROM notifications WHERE seen = 0";
+          $result = mysqli_query($connection, $sql);
+        ?>
+        <li style="float:right;"><a href="notification.php"><i class="fas fa-bell"></i> <?=  $result->num_rows > 0 ? $result->num_rows : "" ?>
+          </a></li>
       <?php } ?>
     
     <?php } else { ?>
@@ -116,7 +123,7 @@
               start_week: start_week
             },
             success: function (data) {
-              location.replace("reservations.php");
+              // location.replace("reservations.php");
             },
             error: function (error) {
               console.log("the error: " + error);

@@ -9,6 +9,7 @@
   <script src='../js/lib/jquery.min.js'></script>
   <script src='../js/lib/fullcalendar.min.js'></script>
   <script src='../js/scheduler.min.js'></script>
+  <link rel="stylesheet" type="text/css" href="../css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
@@ -22,6 +23,12 @@
       
       <?php if (isset($_SESSION['is_admin']) && ($_SESSION['is_admin'] == "1")) { ?>
         <li><a href="admin.php">Admin</a></li>
+        <?php
+          $sql = "SELECT * FROM notifications WHERE seen = 0";
+          $result = mysqli_query($connection, $sql);
+        ?>
+        <li style="float:right;"><a href="notification.php"><i class="fas fa-bell"></i> <?=  $result->num_rows > 0 ? $result->num_rows : "" ?>
+          </a></li>
       <?php } ?>
     
     <?php } else { ?>
