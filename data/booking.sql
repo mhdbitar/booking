@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 08, 2018 at 06:54 PM
+-- Generation Time: Apr 28, 2018 at 10:26 AM
 -- Server version: 10.1.30-MariaDB
 -- PHP Version: 7.2.1
 
@@ -21,6 +21,29 @@ SET time_zone = "+00:00";
 --
 -- Database: `booking`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications`
+--
+
+CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL,
+  `customer` varchar(255) NOT NULL,
+  `room` int(11) NOT NULL,
+  `seen` tinyint(4) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `customer`, `room`, `seen`) VALUES
+(11, 'Admin', 1, 0),
+(12, 'Admin', 1, 0),
+(13, 'Admin', 1, 0),
+(14, 'Admin', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -43,10 +66,9 @@ CREATE TABLE `reservations` (
 --
 
 INSERT INTO `reservations` (`reservation_id`, `room_id`, `user_id`, `reservation_date`, `from_time`, `to_time`, `approved`) VALUES
-(3, 11, 10, '2018-04-08', 9, 11, 0),
-(4, 11, 10, '2018-04-15', 9, 11, 0),
-(6, 11, 9, '2018-04-08', 10, 18, 0),
-(7, 11, 9, '2018-04-08', 20, 21, 0);
+(31, 1, 9, '2018-04-28', 9, 11, 0),
+(32, 1, 9, '2018-05-05', 9, 11, 0),
+(33, 1, 9, '2018-05-12', 9, 11, 0);
 
 -- --------------------------------------------------------
 
@@ -101,6 +123,12 @@ INSERT INTO `users` (`id`, `full_name`, `phonenumber`, `address`, `gender`, `ema
 --
 
 --
+-- Indexes for table `notifications`
+--
+ALTER TABLE `notifications`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `reservations`
 --
 ALTER TABLE `reservations`
@@ -125,10 +153,16 @@ ALTER TABLE `users`
 --
 
 --
+-- AUTO_INCREMENT for table `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `reservations`
 --
 ALTER TABLE `reservations`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `rooms`
