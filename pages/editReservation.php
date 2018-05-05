@@ -49,12 +49,13 @@
       $date = $_POST['date'];
       $from = $_POST['from'];
       $to = $_POST['to'];
+      $room = $_POST['room'];
 
-      $sql = "SELECT * FROM reservations WHERE room_id = '".$_GET['room_id']."' AND reservation_date = '".$date."' AND from_time = '".$from."' AND to_time >= '".$from."'";
+      $sql = "SELECT * FROM reservations WHERE room_id = '".$room."' AND reservation_date = '".$date."' AND from_time = '".$from."' AND to_time >= '".$from."'";
       $result = mysqli_query($connection, $sql);
 
       if ($result->num_rows == 0) {
-        $sql = "UPDATE reservations SET reservation_date = '".$date."', from_time = '".$from."', to_time = '".$to."' WHERE reservation_id = " . $_GET['id'];
+        $sql = "UPDATE reservations SET room_id = '".$room."', reservation_date = '".$date."', from_time = '".$from."', to_time = '".$to."' WHERE reservation_id = " . $_GET['id'];
         $result = mysqli_query($connection, $sql);
 
         header("location: booking.php");
@@ -64,7 +65,6 @@
     }
   ?>
   <form action="editReservation.php?id=<?= $_GET['id'] ?>&room_id=<?= $_GET['room_id']?>" method="POST">
-
     <?php
       $sql = "SELECT * FROM reservations WHERE reservation_id = '".$_GET['id']."'";
       $result = mysqli_query($connection, $sql);
@@ -72,10 +72,13 @@
       $date = "";
       $from = "";
       $to = "";
+      $room = "";
+
       while ($row = mysqli_fetch_assoc($result)) {
         $date = $row['reservation_date'];
         $from = $row['from_time'];
         $to = $row['to_time'];
+        $room = $row['room_id'];
       }
 
       $time = array(
@@ -94,6 +97,32 @@
           "21" => "09:00 PM"
       );
     ?>
+
+    <?php
+      $sql = "SELECT * FROM rooms";
+      $result = mysqli_query($connection, $sql);
+      $rooms = array();
+
+      if ($result->num_rows > 0) { 
+        while ($row = mysqli_fetch_assoc($result)) {
+          $rooms[$row['id']] = $row['room_number'];
+        }
+      }
+    ?>
+
+    <div class="form-group">
+      <label for="room">Room</label>
+      <select name="room" id="room">
+          <option>- Please select a room -</option>
+          <?php foreach ($rooms as $key => $value) { ?>
+            <?php if ($key == $room) { ?>
+              <option value="<?= $key ?>" selected="selected"><?= $value ?></option>
+          <?php } else { ?>
+            <option value="<?= $key ?>"><?= $value ?></option>
+          <?php } ?>
+          <?php } ?>
+      </select>
+    </div>
 
     <div class="form-group">
       <label for="date">Date</label>

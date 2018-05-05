@@ -23,7 +23,6 @@
 			$i = 1;
 
 			while ($duration >= $i) {
-				var_dump("I = " . $i);
 				$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."')";
 		  		$result = mysqli_query($connection, $sql);
 			    $date->modify('next ' . $week);

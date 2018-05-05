@@ -3,6 +3,13 @@
 <head>
   <title>Room Booking</title>
 
+  <link href='../js/lib/fullcalendar.min.css' rel='stylesheet' />
+  <link href='../js/lib/fullcalendar.print.min.css' rel='stylesheet' media='print' />
+  <link href='../js/scheduler.min.css' rel='stylesheet' />
+  <script src='../js/lib/moment.min.js'></script>
+  <script src='../js/lib/jquery.min.js'></script>
+  <script src='../js/lib/fullcalendar.min.js'></script>
+  <script src='../js/scheduler.min.js'></script>
   <link rel="stylesheet" type="text/css" href="../css/fontawesome-all.min.css">
   <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
@@ -35,6 +42,8 @@
     <li><a href="rooms.php">Rooms</a></li>
   </ul>
 <?php
+
+  $flag = false;
   
   if (isset($_POST['single-submit'])) 
   {
@@ -48,6 +57,7 @@
 
     if ($result->num_rows == 0) {
         echo "<p style='color: green;'>This room is empty, please press on the book button <a href='javascript:void(0);' class='submit' data-room='".$room_id."' data-date='".$date."' data-from='".$from."' data-to='".$to."' data-week='0' data-month='0' data-duration='0' data-start_week='0'>Book</a> to reserve this room.</p>";
+        $flag = true;
     } else {
       echo "<p style='color: red;'>Unfortunately this room is not empty, please press on the back button <a href='reservations.php'>Back</a> to research again for another room.</p>";
     }
@@ -66,6 +76,7 @@
 
         if ($result->num_rows == 0) {
             echo "<p style='color: green;'>This room is empty, please press on the book button <a href='javascript:void(0);' class='submit' data-room='".$room_id."' data-date='".$date."' data-from='".$from."' data-to='".$to."' data-week='".$week."' data-month='0' data-duration='".$duration."' data-start_week='0'>Book</a> to reserve this room.</p>";
+            $flag = true;
         } else {
           echo "<p style='color: red;'>Unfortunately this room is not empty, please press on the back button <a href='reservations.php'>Back</a> to research again for another room.</p>";
         }
@@ -85,15 +96,49 @@
 
         if ($result->num_rows == 0) {
             echo "<p style='color: green;'>This room is empty, please press on the book button <a href='javascript:void(0);' class='submit' data-room='".$room_id."' data-date='".$date."' data-from='".$from."' data-to='".$to."' data-week='0' data-month='".$week."' data-duration='".$duration."' data-start_week='".$start_week."'>Book</a> to reserve this room.</p>";
+            $flag = true;
         } else {
           echo "<p style='color: red;'>Unfortunately this room is not empty, please press on the back button <a href='reservations.php'>Back</a> to research again for another room.</p>";
         }
   }
 ?>
-<script
+<div id='calendar'></div>
+<!-- <script
   src="https://code.jquery.com/jquery-3.3.1.min.js"
   integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-  crossorigin="anonymous"></script>
+  crossorigin="anonymous"></script> -->
+  <script>
+
+  $(function() { // document ready
+
+    $('#calendar').fullCalendar({
+      editable: false, // enable draggable events
+      aspectRatio: 1.8,
+      scrollTime: '00:00', // undo default 6am scrollTime
+      header: {
+        left: 'today prev,next',
+        center: 'title',
+        right: 'timelineDay,agendaWeek,month'
+      },
+      // defaultView: 'timelineDay',
+      views: {
+        timelineThreeDays: {
+          type: 'timeline',
+          duration: { days: 3 }
+        }
+      },
+      events: [
+        {
+          title: 'Your Search',
+          start: "<?= $_POST['date']; ?>"
+        }
+      ],
+      eventColor: '#378006',
+    });
+  
+  });
+
+</script>
 <script type="text/javascript">
   $(document).ready(function () {
     $('body').on('click', '.submit', function () {
@@ -123,7 +168,7 @@
               start_week: start_week
             },
             success: function (data) {
-              // location.replace("reservations.php");
+              location.replace("reservations.php");
             },
             error: function (error) {
               console.log("the error: " + error);
@@ -133,5 +178,7 @@
     });
   });
 </script>
+
+
 </body>
 </html>
