@@ -150,7 +150,7 @@
 
 
   <h2>Regular Booking (Weekly)</h2>
-  <form action="search.php" method="post">
+  <form action="search.php" method="post" name="weekForm" onsubmit="return check()">
     <div class="form-group">
       <label for="room">Room</label>
       <select name="room" id="room">
@@ -299,5 +299,31 @@
 
     <input type="submit" name="month-submit" value="Search">
   </form>
+
+  <script type="text/javascript">
+    function check() {
+      var week = document.forms["weekForm"]["week"].value;
+      var date = document.forms["weekForm"]["date"].value;
+      
+      var newDate = new Date(date);
+      var weekday = [];
+      weekday[0] = "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
+      
+      var wd = weekday[newDate.getDay()];
+    
+      if (wd != week) {
+          alert("Please enter correct date and dat.");
+          return false;
+      }
+
+      return true;
+    }
+  </script>
 </body>
 </html>

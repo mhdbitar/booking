@@ -88,7 +88,7 @@
 		}						
 	}
 
-	if ($month == 0 && $week == 0) {
+	if (($month === 0) && ($week === 0)) {
 		$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date."', '".$from."', '".$to."')";
 		$result = mysqli_query($connection, $sql);
 		set_notification(1, $_SESSION['user_name'], $room_id, $connection);
