@@ -223,7 +223,7 @@
   </form>
 
     <h2>Regular Booking (Monthly)</h2>
-  <form action="search.php" method="post">
+  <form action="javascript:void(0);" method="post" name="monthForm" onsubmit="return checkMonth()">
     <div class="form-group">
       <label for="room">Room</label>
       <select name="room" id="room">
@@ -324,6 +324,44 @@
 
       return true;
     }
+
+    function checkMonth() {
+      var week = document.forms["monthForm"]["week"].value;
+      var date = document.forms["monthForm"]["date"].value;
+      var start_week = document.forms["monthForm"]["start_week"].value;
+      var weekNumber = (new Date(date)).getWeek();
+      
+      if (start_week != weekNumber) {
+        alert("Please enter correct date and start week.");
+        return false;
+      }
+
+      var newDate = new Date(date);
+      var weekday = [];
+      weekday[0] = "Sunday";
+      weekday[1] = "Monday";
+      weekday[2] = "Tuesday";
+      weekday[3] = "Wednesday";
+      weekday[4] = "Thursday";
+      weekday[5] = "Friday";
+      weekday[6] = "Saturday";
+      
+      var wd = weekday[newDate.getDay()];
+    
+      if (wd != week) {
+          alert("Please enter correct date and dat.");
+          return false;
+      }
+
+      return true;
+    }
+  </script>
+
+  <script>
+      Date.prototype.getWeek = function(){
+          var firstDay = new Date(this.getFullYear(), this.getMonth(), 1).getDay();
+          return Math.ceil((this.getDate() + firstDay)/7);
+      }
   </script>
 </body>
 </html>
