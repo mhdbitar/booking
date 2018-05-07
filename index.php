@@ -39,6 +39,6 @@
       <h1>Welcome to ROOM BOOKING system</h1>
       <p>You can find and reserve a specific room in this website.</p>
     </div>
-  </div>
+  </div>  
 </body>
 </html>

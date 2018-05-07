@@ -127,12 +127,34 @@
           duration: { days: 3 }
         }
       },
-      events: [
-        {
-          title: 'Your Search',
-          start: "<?= $_POST['date']; ?>"
-        }
-      ],
+      events: function(start, end, timezone, callback) {
+        $.ajax({
+          url: 'getReservations.php',
+          type: "GET",
+          success: function(doc) {
+            var data = JSON.parse(doc);
+            var events = [];
+
+            for (var i = 0; i < data.length; i++) {
+              events.push({
+                id: i,
+                start: data[i].start,
+                end: data[i].end,
+                title: "Customer name : " + data[i].customer + "\nRoom: " + data[i].room_number,
+                color  : 'red'
+              });
+            }
+            events.push({
+              title: 'Your Search',
+              start: "<?= $_POST['date']; ?>"
+            });  
+            callback(events);
+          },
+          error: function (e) {
+            console.log(e);
+          }
+        });
+      },
       eventColor: '#378006',
     });
   
