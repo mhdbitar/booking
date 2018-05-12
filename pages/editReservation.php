@@ -105,7 +105,7 @@
 
       if ($result->num_rows > 0) { 
         while ($row = mysqli_fetch_assoc($result)) {
-          $rooms[$row['id']] = $row['room_number'];
+          $rooms[$row['id']] = $row['room_name'];
         }
       }
     ?>

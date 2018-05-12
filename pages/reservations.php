@@ -332,10 +332,10 @@
       var start_week = document.forms["monthForm"]["start_week"].value;
       var weekNumber = (new Date(date)).getWeek();
       
-      if (start_week != weekNumber) {
-        alert("Please enter correct date and start week.");
-        return false;
-      }
+      // if (start_week != weekNumber) {
+      //   alert("Please enter correct date and start week.");
+      //   return false;
+      // }
 
       var newDate = new Date(date);
       var weekday = [];
@@ -350,7 +350,7 @@
       var wd = weekday[newDate.getDay()];
     
       if (wd != week) {
-          alert("Please enter correct date and dat.");
+          alert("Please enter correct date and date.");
           return false;
       }
 
