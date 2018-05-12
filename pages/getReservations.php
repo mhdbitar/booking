@@ -1,7 +1,14 @@
 <?php
   include('config.php');
 
-  $sql = "SELECT * FROM reservations INNER JOIN rooms ON reservations.room_id = rooms.id INNER JOIN users ON users.id = reservations.user_id";
+  $room = $_GET['room'];
+  $sql = "";
+
+  if ($room != 0) {
+    $sql = "SELECT * FROM reservations INNER JOIN rooms ON reservations.room_id = rooms.id INNER JOIN users ON users.id = reservations.user_id WHERE reservations.room_id = " . $_GET['room'];
+  } else {
+    $sql = "SELECT * FROM reservations INNER JOIN rooms ON reservations.room_id = rooms.id INNER JOIN users ON users.id = reservations.user_id";
+  }
   $rooms = mysqli_query($connection, $sql);
   
   $array = array();

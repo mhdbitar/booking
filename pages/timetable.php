@@ -13,7 +13,7 @@
   <link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
-  
+  <?php include('config.php'); ?>
 <ul>
     <li><a href="../index.php" class="active">Home</a></li>
     <li><a href="register.php">Regsiter</a></li>
@@ -45,56 +45,109 @@
     <a href='timetable.php'>Timetable</a>
   </div>
 
+  <?php
+    $sql = "SELECT * FROM rooms";
+    $result = mysqli_query($connection, $sql);
+    $rooms = array();
+
+    if ($result->num_rows > 0) { 
+      while ($row = mysqli_fetch_assoc($result)) {
+        $rooms[$row['id']] = $row['room_name'];
+      }
+    }
+  ?>
+  <div class="form-group">
+      <label for="room">Room</label>
+      <select name="room" id="room">
+          <option>- Please select a room -</option>
+          <?php foreach ($rooms as $key => $value) {
+            echo "<option value='".$key."'>".$value."</option>";
+          }?>
+      </select>
+    </div>
 <div id='calendar'></div>
 
   
 
 <script>
+  $(document).ready(function () {
+    $("body").on("change", "#room", function () {
+      var room = $(this).val();
+      $('#calendar').fullCalendar('removeEventSources');
 
-  $(function() { // document ready
+      $.ajax({
+            url: 'getReservations.php',
+            type: "GET",
+            data: {
+              "room" : room
+            },
+            success: function(doc) {
+              var data = JSON.parse(doc);
+              var events = [];
 
-    $('#calendar').fullCalendar({
-      editable: false, // enable draggable events
-      aspectRatio: 1.8,
-      scrollTime: '00:00', // undo default 6am scrollTime
-      header: {
-        left: 'today prev,next',
-        center: 'title',
-        right: 'timelineDay,agendaWeek,month'
-      },
-      // defaultView: 'timelineDay',
-      views: {
-        timelineThreeDays: {
-          type: 'timeline',
-          duration: { days: 3 }
-        }
-      },
-      events: function(start, end, timezone, callback) {
-        $.ajax({
-          url: 'getReservations.php',
-          type: "GET",
-          success: function(doc) {
-            var data = JSON.parse(doc);
-            var events = [];
-
-            for (var i = 0; i < data.length; i++) {
-              events.push({
-                id: i,
-                start: data[i].start,
-                end: data[i].end,
-                title: data[i].customer,
-              });
-            }
+              for (var i = 0; i < data.length; i++) {
+                events.push({
+                  id: i,
+                  start: data[i].start,
+                  end: data[i].end,
+                  title: data[i].customer,
+                });
+              }
+              
+              $('#calendar').fullCalendar('addEventSource', events);        
             
-            callback(events);
-          },
-          error: function (e) {
-            console.log(e);
-          }
-        });
-      }
+            },
+            error: function (e) {
+              console.log(e);
+            }
+          });
+        
     });
-  
+
+    $('#calendar').fullCalendar( {
+        editable: false, // enable draggable events
+        aspectRatio: 1.8,
+        scrollTime: '00:00', // undo default 6am scrollTime
+        header: {
+          left: 'today prev,next',
+          center: 'title',
+          right: 'timelineDay,agendaWeek,month'
+        },
+        // defaultView: 'timelineDay',
+        views: {
+          timelineThreeDays: {
+            type: 'timeline',
+            duration: { days: 3 }
+          }
+        },
+        events: function(start, end, timezone, callback) {
+          $.ajax({
+            url: 'getReservations.php',
+            type: "GET",
+            data: {
+              "room" : 0
+            },
+            success: function(doc) {
+              var data = JSON.parse(doc);
+              var events = [];
+
+              for (var i = 0; i < data.length; i++) {
+                events.push({
+                  id: i,
+                  start: data[i].start,
+                  end: data[i].end,
+                  title: data[i].customer,
+                });
+              }
+              
+              callback(events);
+            },
+            error: function (e) {
+              console.log(e);
+            }
+          });
+        }
+      });
   });
 
 </script>

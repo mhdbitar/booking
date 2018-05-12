@@ -45,8 +45,10 @@
   <table style="width:100%">
   <tr>
     <th>#</th>
+    <th>Room name</th>
     <th>Room number</th> 
     <th>Room description</th>
+    <th>Room price</th>
     <th>Actions</th>
   </tr>
   <?php
@@ -58,8 +60,10 @@
       while ($row = mysqli_fetch_assoc($rooms)) {
          echo "<tr>";
           echo "<td>".$row['id']."</td>";
+          echo "<td>".$row['room_name']."</td>";
           echo "<td>".$row['room_number']."</td>";
           echo "<td>".$row['description']."</td>";
+          echo "<td>".$row['price']."</td>";
           echo "<td><a href='deleteRoom.php?id=".$row['id']."' class='delete'>Delete</a></td>";
          echo "</tr>";
       }
@@ -71,12 +75,14 @@
     if (isset($_POST['submit'])) 
     {
       $room_number = $_POST['room_number'];
+      $room_name = $_POST['room_name'];
       $description = $_POST['description'];
+      $price = $_POST['price'];
 
       if (move_uploaded_file($_FILES['image']["tmp_name"], "../img/" . basename($_FILES["image"]['name']))) {
             }
 
-      $sql = "INSERT INTO rooms (room_number, description, image) VALUES ('".$room_number."', '".$description."', '".$_FILES["image"]['name']."')";
+      $sql = "INSERT INTO rooms (room_name, room_number, description, image, price) VALUES ('".$room_name."', '".$room_number."', '".$description."', '".$_FILES["image"]['name']."', '".$price."')";
     
       $result = mysqli_query($connection, $sql);
 
@@ -90,6 +96,11 @@
   ?>
   <form action="room.php" method="POST" enctype="multipart/form-data">
     <div class="form-group">
+      <label for="room_name">Room name</label>
+      <input type="text" name="room_name" id="room_name" placeholder="Please Enter Room Name">      
+    </div>
+
+    <div class="form-group">
       <label for="room_number">Room number</label>
       <input type="number" name="room_number" id="room_number" placeholder="Please Enter Room Number">      
     </div>
@@ -97,6 +108,11 @@
     <div class="form-group">
       <label for="description">Room Description</label>
       <textarea id="description" name="description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Room price</label>
+      <input type="text" name="price" id="price" placeholder="Please Enter Room Price">      
     </div>
 
     <div class="form-group">

@@ -10,6 +10,16 @@
 	$duration = $_POST['duration'];
 	$start_week = $_POST['start_week'];
 
+	$sql = "SELECT * FROM rooms WHERE id =" . $room_id;
+	$result = mysqli_query($connection, $sql);
+	$room_price = 0;
+
+	if ($result->num_rows > 0) { 
+      while ($row = mysqli_fetch_assoc($result)) {
+        $room_price = $row['price'];
+      }
+    }
+
 	if ($week != "0") {
 		$date = strtotime($date);
 		$date =  date('Y-m-d', $date);
@@ -23,7 +33,7 @@
 			$i = 1;
 
 			while ($duration >= $i) {
-				$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."')";
+				$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time, room_price) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."', '".$room_price."')";
 		  		$result = mysqli_query($connection, $sql);
 			    $date->modify('next ' . $week);
 			    
@@ -53,7 +63,7 @@
 			$i = 1; 
 
 			while ($date->format('y') === $thisYear) {
-				$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."')";
+				$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time, room_price) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date->format('Y-m-d')."', '".$from."', '".$to."', '".$room_price."')";
 		  		$result = mysqli_query($connection, $sql);
 			    $date->modify('next month');
 
@@ -89,7 +99,7 @@
 	}
 
 	if (($month === 0) && ($week === 0)) {
-		$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date."', '".$from."', '".$to."')";
+		$sql = "INSERT INTO reservations (room_id, user_id, reservation_date, from_time, to_time, room_price) VALUES ('".$room_id."', '".$_SESSION['user_id']."', '".$date."', '".$from."', '".$to."', '".$room_price."')";
 		$result = mysqli_query($connection, $sql);
 		set_notification(1, $_SESSION['user_name'], $room_id, $connection);
 		if ($result) {

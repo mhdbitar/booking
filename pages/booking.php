@@ -46,11 +46,12 @@
   <table style="width:100%">
   <tr>
     <th>#</th>
-    <th>Room number</th> 
+    <th>Room name</th> 
     <th>Customer name</th>
     <th>Reservation date</th>
     <th>From (time)</th>
     <th>To (time)</th>
+    <th>Total price</th>
     <th>Approved</th>
     <th>Actions</th>
   </tr>
@@ -63,18 +64,19 @@
       while ($row = mysqli_fetch_assoc($rooms)) {
          echo "<tr>";
           echo "<td>".$row['reservation_id']."</td>";
-          echo "<td>".$row['room_number']."</td>";
+          echo "<td>".$row['room_name']."</td>";
           echo "<td>".$row['full_name']."</td>";
           echo "<td>".$row['reservation_date']."</td>";
           echo "<td>".$row['from_time']."</td>";
           echo "<td>".$row['to_time']."</td>";
-        
+          echo "<td>".$row['room_price']."</td>";
+
           if ($row['approved'] == "1") {
             echo "<td>Yes</td>";
           } else {
             echo "<td>No</td>";
           }
-          echo "<td><a href='deleteReservation.php?id=".$row['reservation_id']."' class='delete'>Delete</a> <a href='editReservation.php?id=".$row['reservation_id']."&room_id=".$row['room_id']."'>Edit</a><a href='approve.php?id=".$row['reservation_id']."' class='approve'>Approve</a></td>";
+          echo "<td><a href='deleteReservation.php?id=".$row['reservation_id']."' class='delete'>Delete</a> <a href='editReservation.php?id=".$row['reservation_id']."&room_id=".$row['room_id']."'>Edit</a><a href='approve.php?id=".$row['reservation_id']."' class='approve'>Approve</a><a href='discount.php?id=".$row['reservation_id']."' class='discount'>Set discount</a></td>";
          echo "</tr>";
       }
     }

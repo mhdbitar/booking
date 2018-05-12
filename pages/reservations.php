@@ -88,7 +88,7 @@
 
     if ($result->num_rows > 0) { 
       while ($row = mysqli_fetch_assoc($result)) {
-        $rooms[$row['id']] = $row['room_number'];
+        $rooms[$row['id']] = $row['room_name'];
       }
     }
   ?>
@@ -175,6 +175,7 @@
     </div>
     
     <div class="form-group">
+      <p style="color: #ff0000fa; font-style: italic; font-size: 16px;">Note: Start Date should be the equal to the selected day above.</p>
       <label for="date">Start Date</label>
       <input type="date" id="date" name="date">      
     </div>
@@ -223,7 +224,7 @@
   </form>
 
     <h2>Regular Booking (Monthly)</h2>
-  <form action="javascript:void(0);" method="post" name="monthForm" onsubmit="return checkMonth()">
+  <form action="search.php" method="post" name="monthForm" onsubmit="return checkMonth()">
     <div class="form-group">
       <label for="room">Room</label>
       <select name="room" id="room">
