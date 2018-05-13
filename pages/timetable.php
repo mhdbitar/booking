@@ -121,31 +121,31 @@
           }
         },
         events: function(start, end, timezone, callback) {
-          $.ajax({
-            url: 'getReservations.php',
-            type: "GET",
-            data: {
-              "room" : 0
-            },
-            success: function(doc) {
-              var data = JSON.parse(doc);
-              var events = [];
+          // $.ajax({
+          //   url: 'getReservations.php',
+          //   type: "GET",
+          //   data: {
+          //     "room" : 0
+          //   },
+          //   success: function(doc) {
+          //     var data = JSON.parse(doc);
+          //     var events = [];
 
-              for (var i = 0; i < data.length; i++) {
-                events.push({
-                  id: i,
-                  start: data[i].start,
-                  end: data[i].end,
-                  title: data[i].customer,
-                });
-              }
+          //     for (var i = 0; i < data.length; i++) {
+          //       events.push({
+          //         id: i,
+          //         start: data[i].start,
+          //         end: data[i].end,
+          //         title: data[i].customer,
+          //       });
+          //     }
               
-              callback(events);
-            },
-            error: function (e) {
-              console.log(e);
-            }
-          });
+          //     callback(events);
+          //   },
+          //   error: function (e) {
+          //     console.log(e);
+          //   }
+          // });
         }
       });
   });
