@@ -83,6 +83,21 @@
 					$date = date_format($date,"Y-m-d");
 			    	$date = new DateTime($date); 	
 			    }
+
+			    $date = $date->format('Y-m-d');
+			    $wichWeek = week_number($date);
+	    	
+				$num = abs($wichWeek - $start_week) * 7;
+				$date = strtotime($date);
+
+			    if ($wichWeek > $start_week) {
+			    	$date = strtotime("-$num day", $date);
+				} else if ($wichWeek < $start_week) {
+					$date = strtotime("+$num day", $date);
+				}
+			    $date =  date('Y-m-d', $date);
+			    $date = new DateTime($date); 	
+			    
 				if ($duration == $i) {
 					break;
 				}

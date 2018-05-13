@@ -8,9 +8,7 @@
 </head>
 <body>
   <?php
-    include('pages/config.php'); 
-    
-  var_dump(ceil( date( 'j', strtotime( "2018-08-25" ) ) / 7 ));
+    include('pages/config.php');
   ?>
 
   <ul>
