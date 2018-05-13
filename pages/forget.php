@@ -36,15 +36,16 @@
     if (isset($_POST['submit'])) 
     {
       $email = $_POST['email'];
-      $password = $_POST['password'];
-
+      $salt = generateRandomString();
+      $password = password_hash($_POST['password'].$salt, PASSWORD_BCRYPT);
+      
       $sql = "SELECT * FROM users where email='".$email."'";
       $result = mysqli_query($connection, $sql);
 
       if ($result->num_rows == 1) {
         $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-        $sql = "UPDATE users SET password = '".$password."' WHERE email = '".$email."'";
+        $sql = "UPDATE users SET password = '".$password."', salt = '".$salt."' WHERE email = '".$email."'";
         $result = mysqli_query($connection, $sql);
         
         header("location: login.php");
@@ -52,6 +53,16 @@
         echo "<p style='color: red;'>Something went wrong, please try again.</p>";
         header("location: ../index.php");
       }
+    }
+
+    function generateRandomString($length = 10) {
+      $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+      $charactersLength = strlen($characters);
+      $randomString = '';
+      for ($i = 0; $i < $length; $i++) {
+          $randomString .= $characters[rand(0, $charactersLength - 1)];
+      }
+      return $randomString;
     }
   ?>
 

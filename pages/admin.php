@@ -41,6 +41,7 @@
     <a href="room.php">Rooms</a>
     <a href="booking.php">Reservations</a>  
     <a href='timetable.php'>Timetable</a>
+    <a href='users.php'>Users</a>
 </div>
 
   <p class="admin-paragraph">Here in this page the admin can manage the rooms and reservations for all the customers...</p>
